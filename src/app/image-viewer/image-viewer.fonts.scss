@@ -1,0 +1,9 @@
+@import '../styling/fonts.scss';
+
+.image-viewer-container {
+  p {
+    font-family: $font-family;
+    font-size: $font-large-size;
+    color: beige;
+  }
+}

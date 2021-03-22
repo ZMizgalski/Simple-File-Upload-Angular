@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "image-viewer"
+    }
+  },
+  "defaultProject": "image-viewer",
+  "cli": {
+    "analytics": false
+  }
 }

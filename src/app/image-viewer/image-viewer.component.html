@@ -1,0 +1,20 @@
+<div class="image-viewer-container">
+  <p>{{imageViewerModel.id}}</p>
+  <p>{{imageViewerModel.name}}</p>
+  <p>{{imageViewerModel.description}}</p>
+  <div class="container__img" *ngFor="let file of imageViewerModel.files ">
+    <span *ngIf="file.state == false">
+      <div class="img-roller">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </span>
+    <img [src]="this.endpointUrl + 'getFile/' + file.id" (load)="file.state = !file.state" />
+  </div>
+</div>
