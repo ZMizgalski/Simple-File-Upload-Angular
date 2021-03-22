@@ -8,7 +8,7 @@ import { EndpointService } from './../servieces/EndpointService';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  items: ImageViewerModel[];
+  public items: ImageViewerModel[];
   constructor(public endpointService: EndpointService) {}
 
   ngOnInit(): void {
