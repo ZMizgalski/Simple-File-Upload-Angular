@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ImageViewerModel } from './models/image-viewer.model';
 import { EndpointService } from './../servieces/EndpointService';
-import { Router } from '@angular/router';
 import { FileModel } from './models/file.model';
 
 @Component({
@@ -18,7 +17,7 @@ export class ImageViewerComponent implements OnInit {
   @Input() data?: ImageViewerModel;
   public endpointUrl: string;
 
-  constructor(public endpointService: EndpointService, private router: Router) {}
+  constructor(public endpointService: EndpointService) {}
 
   ngOnInit(): void {
     this.imageViewerModel = this.data;
