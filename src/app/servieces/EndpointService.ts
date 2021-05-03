@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ImageViewerModel } from './../image-viewer/models/image-viewer.model';
 
@@ -13,7 +13,10 @@ export class EndpointService {
   }
 
   public getFile(id: string): Observable<any> {
-    return this.http.get(this.url + 'getFile/' + id);
+    return this.http.get<Blob>(this.url + 'getFile/' + id, {
+      observe: 'response',
+      responseType: 'blob' as 'json',
+    });
   }
 
   public getItem(name: string): Observable<any> {

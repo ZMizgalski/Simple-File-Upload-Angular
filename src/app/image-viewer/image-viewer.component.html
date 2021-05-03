@@ -1,20 +1,57 @@
 <div class="image-viewer-container">
-  <p>{{imageViewerModel.id}}</p>
-  <p>{{imageViewerModel.name}}</p>
-  <p>{{imageViewerModel.description}}</p>
-  <div class="container__img" *ngFor="let file of imageViewerModel.files ">
-    <span *ngIf="file.state == false">
-      <div class="img-roller">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
+  <p class="viewer__p">{{imageViewerModel.name}}</p>
+  <p class="viewer__p">{{imageViewerModel.description}}</p>
+  <button
+    class="viewer-container__button"
+    [disabled]="imageViewerModel.files == []"
+    (click)="openGallery(imageViewerModel.galleryOpened)"
+  >
+    Open Gallery
+  </button>
+  <div *ngIf="imageViewerModel.galleryOpened" class="image-viewer">
+    <button class="viewer__button" (click)="openGallery(imageViewerModel.galleryOpened)">
+      <i class="pi pi-times"></i>
+    </button>
+    <div class="image-viewer-page-container">
+      <div class="image-viewer-page">
+        <div class="lds-ring" *ngIf="fileList[imageIndex].state == false">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <img
+          [ngClass]="{'img--loading': fileList[imageIndex].state == false }"
+          [src]="fileList[imageIndex].file"
+          (load)="fileList[imageIndex].state = true"
+        />
       </div>
-    </span>
-    <img [src]="this.endpointUrl + 'getFile/' + file.id" (load)="file.state = !file.state" />
+    </div>
+    <div class="image-viewer-items">
+      <div class="image-viewer-page__buttons">
+        <button class="viewer__button" [disabled]="imageIndex == 0" (click)="prevoius()">
+          <i [ngClass]="{'pi--disabled': imageIndex == 0 }" class="pi pi-angle-left"></i>
+        </button>
+        <button
+          class="viewer__button"
+          [disabled]="fileList.length == imageIndex + 1"
+          (click)="next()"
+        >
+          <i
+            [ngClass]="{'pi--disabled': fileList.length == imageIndex + 1 }"
+            class="pi pi-angle-right"
+          ></i>
+        </button>
+      </div>
+      <div class="image-viewer-item">
+        <img
+          *ngFor="let file of fileList; let i = index"
+          (click)="log(i)"
+          [ngClass]="{'footer-img--loading': file.state == false }"
+          [src]="file.file"
+          (load)="file.state = true"
+        />
+      </div>
+    </div>
   </div>
 </div>
