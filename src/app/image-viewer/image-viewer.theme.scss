@@ -1,5 +1,14 @@
 @import '../styling/colors.scss';
 
+@media only screen and (max-width: 200px) {
+  .viewer__button {
+    margin: 10px 0 10px 0 !important;
+    outline: none;
+    background: transparent;
+    border: none;
+  }
+}
+
 .pi {
   color: $theme-color-button !important;
 }
