@@ -2,8 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ImageViewerModel } from './models/image-viewer.model';
 import { EndpointService } from './../servieces/EndpointService';
 import { FileModel } from './models/file.model';
-import { HttpResponse } from '@angular/common/http';
-import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'web-image-viewer',
@@ -15,38 +13,19 @@ import { DomSanitizer } from '@angular/platform-browser';
   ],
 })
 export class ImageViewerComponent implements OnInit {
+  @Input() data?: ImageViewerModel;
   public imageViewerModel: ImageViewerModel;
   public fileList: any[];
   public imageIndex = 0;
-  @Input() data?: ImageViewerModel;
   public endpointUrl: string;
 
-  constructor(public endpointService: EndpointService, private sanitizer: DomSanitizer) {}
+  constructor(public endpointService: EndpointService) {}
 
   ngOnInit(): void {
     this.imageViewerModel = this.data;
-    this.imageViewerModel.files = this.mapImageViewerModelWithState(this.imageViewerModel);
-    this.imageViewerModel = this.refractorViewerModelWithState(this.imageViewerModel);
-    this.fileList = this.mapImageViewerModelWithState(this.imageViewerModel);
     this.endpointUrl = this.endpointService.url;
-    this.santizeFileList();
-  }
-
-  private santizeFileList(): void {
-    this.fileList.map(file => {
-      this.endpointService.getFile(file.id).subscribe((resp: HttpResponse<Blob>) => {
-        const blob = URL.createObjectURL(resp.body);
-        file.file = this.sanitizer.bypassSecurityTrustUrl(blob);
-        return file;
-      });
-    });
-  }
-
-  private mapImageViewerModelWithState(imageViewerModel: ImageViewerModel): FileModel[] {
-    return imageViewerModel.files.map(item => {
-      item.state = false;
-      return item;
-    });
+    this.imageViewerModel = this.refractorViewerModelWithState(this.imageViewerModel);
+    this.fileList = this.imageViewerModel.files;
   }
 
   private refractorViewerModelWithState(imageViewerModel: ImageViewerModel): ImageViewerModel {
@@ -55,15 +34,19 @@ export class ImageViewerComponent implements OnInit {
       name: imageViewerModel.name,
       description: imageViewerModel.description,
       galleryOpened: false,
-      files: imageViewerModel.files,
+      files: this.returnImagesUrls(imageViewerModel.files),
+    });
+  }
+
+  private returnImagesUrls(files: FileModel[]): FileModel[] {
+    return files.map(file => {
+      file.state = false;
+      return file;
     });
   }
 
   public openGallery(galleryOpened: boolean): void {
     this.imageViewerModel.galleryOpened = !galleryOpened;
-    if (!this.imageViewerModel.galleryOpened) {
-      this.imageViewerModel.files = this.mapImageViewerModelWithState(this.imageViewerModel);
-    }
   }
 
   public next(): void {
@@ -76,7 +59,7 @@ export class ImageViewerComponent implements OnInit {
     this.fileList[this.imageIndex].state = false;
   }
 
-  public log(i: number): void {
+  public changeImageOnClick(i: number): void {
     if (i !== this.imageIndex) {
       this.imageIndex = i;
       this.fileList[this.imageIndex].state = false;
