@@ -77,7 +77,9 @@ export class ImageViewerComponent implements OnInit, OnDestroy {
   }
 
   public next(): void {
-    this.subscription.unsubscribe();
+    if (this.subscription !== undefined) {
+      this.subscription.unsubscribe();
+    }
     this.imageIndex = Math.min(this.imageIndex + 1, this.fileList.length - 1);
     if (this.infiniteSliding) {
       if (this.imageIndex + 1 === this.fileList.length) {
@@ -91,7 +93,9 @@ export class ImageViewerComponent implements OnInit, OnDestroy {
   }
 
   public prevoius(): void {
-    this.subscription.unsubscribe();
+    if (this.subscription !== undefined) {
+      this.subscription.unsubscribe();
+    }
     if (this.infiniteSliding) {
       if (this.imageIndex === 0) {
         this.imageIndex = this.fileList.length;
