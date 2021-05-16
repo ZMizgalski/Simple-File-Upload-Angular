@@ -1,3 +1,8 @@
 <div class="main-container" *ngFor="let item of items">
-  <web-image-viewer [infiniteSliding]="true" [data]="item"></web-image-viewer>
+  <web-image-viewer
+    [delay]="5"
+    [autoSliding]="false"
+    [infiniteSliding]="true"
+    [data]="item"
+  ></web-image-viewer>
 </div>

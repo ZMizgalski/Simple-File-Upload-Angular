@@ -17,11 +17,13 @@ export class ImageViewerComponent implements OnInit, OnDestroy {
   @Input() autoSliding = false;
   @Input() infiniteSliding = false;
   @Input() data?: ImageViewerModel;
+  @Input() delay = 3;
   public imageViewerModel: ImageViewerModel;
   public fileList: any[];
   public imageIndex = 0;
   public endpointUrl: string;
   private subscription: Subscription;
+  public autoSlidingTmp: boolean;
 
   constructor(public endpointService: EndpointService) {}
 
@@ -34,10 +36,16 @@ export class ImageViewerComponent implements OnInit, OnDestroy {
     this.endpointUrl = this.endpointService.url;
     this.imageViewerModel = this.refractorViewerModelWithState(this.imageViewerModel);
     this.fileList = this.imageViewerModel.files;
+    this.autoSlidingTmp = this.autoSliding;
+  }
+
+  public changeAutoSliding(): void {
+    this.autoSlidingTmp = !this.autoSlidingTmp;
+    this.autoSlidingTmp ? this.runScheduler() : this.subscription.unsubscribe();
   }
 
   private setupScheduler(): void {
-    this.subscription = interval(5000).subscribe(value => this.next());
+    this.subscription = interval(this.delay * 1000).subscribe(value => this.next());
   }
 
   private refractorViewerModelWithState(imageViewerModel: ImageViewerModel): ImageViewerModel {
@@ -63,10 +71,13 @@ export class ImageViewerComponent implements OnInit, OnDestroy {
 
   public openGallery(galleryOpened: boolean): void {
     this.imageViewerModel.galleryOpened = !galleryOpened;
-    this.runScheduler();
+    if (this.autoSlidingTmp) {
+      this.runScheduler();
+    }
   }
 
   public next(): void {
+    this.subscription.unsubscribe();
     this.imageIndex = Math.min(this.imageIndex + 1, this.fileList.length - 1);
     if (this.infiniteSliding) {
       if (this.imageIndex + 1 === this.fileList.length) {
@@ -74,9 +85,13 @@ export class ImageViewerComponent implements OnInit, OnDestroy {
       }
     }
     this.fileList[this.imageIndex].state = false;
+    if (this.autoSlidingTmp) {
+      this.runScheduler();
+    }
   }
 
   public prevoius(): void {
+    this.subscription.unsubscribe();
     if (this.infiniteSliding) {
       if (this.imageIndex === 0) {
         this.imageIndex = this.fileList.length;
@@ -84,6 +99,9 @@ export class ImageViewerComponent implements OnInit, OnDestroy {
     }
     this.imageIndex = Math.max(this.imageIndex - 1, 0);
     this.fileList[this.imageIndex].state = false;
+    if (this.autoSlidingTmp) {
+      this.runScheduler();
+    }
   }
 
   public changeImageOnClick(i: number): void {

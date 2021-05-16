@@ -22,6 +22,10 @@
 
   <div *ngIf="imageViewerModel.galleryOpened" class="image-viewer">
     <div class="image-viewer-close-container">
+      <button class="viewer__button" (click)="changeAutoSliding()">
+        <i *ngIf="this.autoSlidingTmp" class="pi pi-pause"></i>
+        <i *ngIf="!this.autoSlidingTmp" class="pi pi-play"></i>
+      </button>
       <button class="viewer__button" (click)="openGallery(imageViewerModel.galleryOpened)">
         <i class="pi pi-times"></i>
       </button>
@@ -46,7 +50,6 @@
           <div></div>
         </div>
         <img
-          [ngClass]="{'img--loading': fileList[imageIndex].state == false }"
           [src]="endpointUrl + 'getFile/' + fileList[imageIndex].id"
           (load)="fileList[imageIndex].state = true"
         />
