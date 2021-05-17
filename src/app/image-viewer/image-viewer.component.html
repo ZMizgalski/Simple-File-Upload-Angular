@@ -12,7 +12,6 @@
     <button
       class="viewer-container__button"
       [ngClass]="{'viewer-container__button--disabld': imageViewerModel.galleryOpened === true }"
-      *ngIf="imageViewerModel.files.length > 1"
       [disabled]="imageViewerModel.files == [] || imageViewerModel.galleryOpened === true"
       (click)="openGallery(imageViewerModel.galleryOpened)"
     >
@@ -22,9 +21,21 @@
 
   <div *ngIf="imageViewerModel.galleryOpened" class="image-viewer">
     <div class="image-viewer-close-container">
-      <button class="viewer__button" (click)="changeAutoSliding()">
-        <i *ngIf="this.autoSlidingTmp" class="pi pi-pause"></i>
-        <i *ngIf="!this.autoSlidingTmp" class="pi pi-play"></i>
+      <button
+        class="viewer__button"
+        (click)="changeAutoSliding()"
+        [disabled]="imageViewerModel.files.length <= 1"
+      >
+        <i
+          *ngIf="this.autoSlidingTmp"
+          [ngClass]="{'pi--disabled': imageViewerModel.files.length <= 1}"
+          class="pi pi-pause"
+        ></i>
+        <i
+          *ngIf="!this.autoSlidingTmp"
+          [ngClass]="{'pi--disabled': imageViewerModel.files.length <= 1}"
+          class="pi pi-play"
+        ></i>
       </button>
       <button class="viewer__button" (click)="openGallery(imageViewerModel.galleryOpened)">
         <i class="pi pi-times"></i>
@@ -33,11 +44,11 @@
     <div class="image-viewer-page-container">
       <button
         class="viewer__button"
-        [disabled]="imageIndex == 0 && !infiniteSliding"
+        [disabled]="imageIndex == 0 && !infiniteSliding || imageViewerModel.files.length <= 1"
         (click)="prevoius()"
       >
         <i
-          [ngClass]="{'pi--disabled': imageIndex == 0  && !infiniteSliding}"
+          [ngClass]="{'pi--disabled': imageIndex == 0  && !infiniteSliding || imageViewerModel.files.length <= 1}"
           class="pi pi-angle-left"
         ></i>
       </button>
@@ -56,11 +67,11 @@
       </div>
       <button
         class="viewer__button"
-        [disabled]="fileList.length == imageIndex + 1  && !infiniteSliding"
+        [disabled]="fileList.length == imageIndex + 1  && !infiniteSliding || imageViewerModel.files.length <= 1"
         (click)="next()"
       >
         <i
-          [ngClass]="{'pi--disabled': fileList.length == imageIndex + 1  && !infiniteSliding}"
+          [ngClass]="{'pi--disabled': fileList.length == imageIndex + 1  && !infiniteSliding || imageViewerModel.files.length <= 1}"
           class="pi pi-angle-right"
         ></i>
       </button>
