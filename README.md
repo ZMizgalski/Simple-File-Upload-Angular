@@ -29,7 +29,7 @@ List the ready features here:
 ## Usage
 1. Create a folder named you like.
 2. Inside your folder, open console and paste: `git clone https://github.com/ZMizgalski/Simple-File-Upload-Angular.git`
-3. Then you are ready to go just open it in any Editor. (I prefer VSCode) [Download here](https://www.jetbrains.com/idea/download/#section=windows)
+3. Then you are ready to go just open it in any Editor. (I prefer VSCode) [Download here](https://code.visualstudio.com/)
 
 ## Project Status
 Project is:  _complete_ .
@@ -41,4 +41,4 @@ Project is:  _complete_ .
 Created by [@zmizgalski](https://zmizgalski.github.io/) - feel free to contact me!
 
 ## License
-This project is open source and available under the [... License](https://github.com/ZMizgalski/Simple-File-Upload-Spring-Boot-Java/blob/master/LICENSE).
+This project is open source and available under the [... License](https://github.com/ZMizgalski/Simple-File-Upload-Angular/blob/main/LICENSE).
